@@ -11,7 +11,7 @@
 <p><code>curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -<br>
 <p>sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"<br>
 <p>sudo apt-get update && sudo apt-get install vagrant</code><br>
-**Проверяем версию ПО:**
-  <code>root@DESKTOP-R930J14:~# vagrant --version
-    Vagrant 2.2.19</code>
+Проверяем версию ПО:
+  <p><code>root@DESKTOP-R930J14:~# vagrant --version<br>
+    <p>Vagrant 2.2.19</code><br>
 </ol>
