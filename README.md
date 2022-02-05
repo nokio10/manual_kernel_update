@@ -1,6 +1,6 @@
 # **Установка ПО**
 
-## **Установка git**
+## ** 1. Установка git**
 
 Установил git командой:
 
@@ -11,7 +11,7 @@
 git clone https://github.com/nokio10/manual_kernel_update.git
 ```
 
-**Установка Virtualbox**
+## ** 2. Установка Virtualbox**
 
 В качестве основной системы выбрана ubuntu, поэтому устанавливаю virtualbox для ubuntu.
 ```
@@ -34,7 +34,7 @@ VRDE Module:  VBoxVNC
 Usable:       true
 Why unusable:
 ```
-## **Установка Vagrant**
+## **3. Установка Vagrant**
 Так как хостовая ОС выбрана Ubuntu, иду в соответствующий раздел на сайте https://www.vagrantup.com/downloads и выполняю действия описанные для данного дистрибутива:
 
 ```
@@ -48,7 +48,7 @@ sudo apt-get update && sudo apt-get install vagrant
 vagrant --version
 Vagrant 2.2.19
 ```
-## **Установка Packer**
+## **4. Установка Packer**
 
 Устанавливаю пакер по инструкции https://www.packer.io/downloads.
 ```
@@ -62,7 +62,7 @@ root@ubuntu:~/manual_kernel_update# packer --version
 1.7.10
 ```
 
-# Kernel update
+# **Kernel update**
 Запускаю vagrant и проверяю подключение по ssh:
 ```
 root@ubuntu:~/manual_kernel_update#vagrant up
@@ -229,7 +229,7 @@ done
 ```
 Загрузка прошла успешно, версия ядра изменилась. 
 
-# Packer
+# **Packer**
 
 Из конфига ~/manual_kernel_update/packer/centos.json удаляю deprecated параметр 
 ```
@@ -350,7 +350,7 @@ Last login: Sat Feb  5 12:05:06 2022 from 10.0.2.2
 5.16.5-1.el7.elrepo.x86_64
 ```
 
-# Vagrant cloud
+# **Vagrant cloud**
 
 Авторизуюсь в cloud командой 
 ```
