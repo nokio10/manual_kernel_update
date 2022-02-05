@@ -8,7 +8,7 @@
 
 Склонировал репозиторий на локальную машину.
 ```
-git clone https://github.com/dmitry-lyutenko/manual_kernel_update.git
+git clone https://github.com/nokio10/manual_kernel_update.git
 ```
 
 **Установка Virtualbox**
@@ -47,6 +47,19 @@ sudo apt-get update && sudo apt-get install vagrant
 ```
 vagrant --version
 Vagrant 2.2.19
+```
+## **Установка Packer**
+
+Устанавливаю пакер по инструкции https://www.packer.io/downloads.
+```
+curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
+sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(lsb_release -cs) main"
+sudo apt-get update && sudo apt-get install packer
+```
+Проверяю версию ПО:
+```
+root@ubuntu:~/manual_kernel_update# packer --version
+1.7.10
 ```
 
 # Kernel update
@@ -218,3 +231,123 @@ done
 
 # Packer
 
+Из конфига ~/manual_kernel_update/packer/centos.json удаляю deprecated параметр 
+```
+"iso_checksum_type": "sha256",
+```
+И добавляю запуск vbox без gui
+```
+"headless": true
+```
+Запускаю создание машины
+```
+root@ubuntu:~/manual_kernel_update/packer# packer build centos.json
+centos-7.7: output will be in this color.
+
+==> centos-7.7: Cannot find "Default Guest Additions ISO" in vboxmanage output (or it is empty)
+==> centos-7.7: Retrieving Guest additions checksums
+==> centos-7.7: Trying https://download.virtualbox.org/virtualbox/6.1.26/SHA256SUMS
+==> centos-7.7: Trying https://download.virtualbox.org/virtualbox/6.1.26/SHA256SUMS
+    centos-7.7: SHA256SUMS 2.67 KiB / 2.67 KiB [===============================================================================================================================================] 100.00% 0s
+==> centos-7.7: https://download.virtualbox.org/virtualbox/6.1.26/SHA256SUMS => /root/.cache/packer/b8316640e9c436fc7db59c73e197f33ce7e34cc8
+==> centos-7.7: Retrieving Guest additions
+==> centos-7.7: Trying https://download.virtualbox.org/virtualbox/6.1.26/VBoxGuestAdditions_6.1.26.iso
+==> centos-7.7: Trying https://download.virtualbox.org/virtualbox/6.1.26/VBoxGuestAdditions_6.1.26.iso?checksum=22d02ec417cd7723d7269dbdaa71c48815f580c0ca7a0606c42bd623f84873d7
+    centos-7.7: VBoxGuestAdditions_6.1.26.iso 58.24 MiB / 58.24 MiB [==========================================================================================================================] 100.00% 6s
+==> centos-7.7: https://download.virtualbox.org/virtualbox/6.1.26/VBoxGuestAdditions_6.1.26.iso?checksum=22d02ec417cd7723d7269dbdaa71c48815f580c0ca7a0606c42bd623f84873d7 => /root/.cache/packer/2d92aa1b086b7dac77e9aab839ca533b3420e82f.iso
+==> centos-7.7: Retrieving ISO
+==> centos-7.7: Trying http://mirror.corbina.net/pub/Linux/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso
+==> centos-7.7: Trying http://mirror.corbina.net/pub/Linux/centos/7.9.2009/isos/x86_64/CentOS-7-x86_64-Minimal-2009.iso?checksum=sha256%3A07b94e6b1a0b0260b94c83d6bb76b26bf7a310dc78d7a9c7432809fb9bc6194a
+    centos-7.7: CentOS-7-x86_64-Minimal-2009.iso 973.00 MiB / 973.00 MiB [==================================================================================================================] 100.00% 1m49s
+    ................................
+    ................................
+    ................................
+==> centos-7.7 (vagrant): Creating a dummy Vagrant box to ensure the host system can create one correctly
+==> centos-7.7 (vagrant): Creating Vagrant box for 'virtualbox' provider
+    centos-7.7 (vagrant): Copying from artifact: builds/packer-centos-vm-disk001.vmdk
+    centos-7.7 (vagrant): Copying from artifact: builds/packer-centos-vm.mf
+    centos-7.7 (vagrant): Copying from artifact: builds/packer-centos-vm.ovf
+    centos-7.7 (vagrant): Renaming the OVF to box.ovf...
+    centos-7.7 (vagrant): Compressing: Vagrantfile
+    centos-7.7 (vagrant): Compressing: box.ovf
+    centos-7.7 (vagrant): Compressing: metadata.json
+    centos-7.7 (vagrant): Compressing: packer-centos-vm-disk001.vmdk
+    centos-7.7 (vagrant): Compressing: packer-centos-vm.mf
+Build 'centos-7.7' finished after 18 minutes 33 seconds.
+
+==> Wait completed after 18 minutes 33 seconds
+
+==> Builds finished. The artifacts of successful builds are:
+--> centos-7.7: 'virtualbox' provider box: centos-7.7.1908-kernel-5-x86_64-Minimal.box
+```
+Проверяю наличия файла образа в папке 
+```
+root@ubuntu:~/manual_kernel_update/packer# ll
+total 815316
+drwxr-xr-x 4 root root      4096 фев  5 15:06 ./
+drwxr-xr-x 6 root root      4096 фев  5 14:32 ../
+-rw-r--r-- 1 root root 834855927 фев  5 15:06 centos-7.7.1908-kernel-5-x86_64-Minimal.box
+```
+Импортию полученный образ в vagrant
+```
+root@ubuntu:~/manual_kernel_update/packer# vagrant box list
+centos/7 (virtualbox, 2004.01)
+root@ubuntu:~/manual_kernel_update/packer# vagrant box add --name centos-7-5 centos
+centos-7.7.1908-kernel-5-x86_64-Minimal.box  centos.json
+root@ubuntu:~/manual_kernel_update/packer# vagrant box add --name centos-7-5 centos-7.7.1908-kernel-5-x86_64-Minimal.box
+==> box: Box file was not detected as metadata. Adding it directly...
+==> box: Adding box 'centos-7-5' (v0) for provider:
+    box: Unpacking necessary files from: file:///root/manual_kernel_update/packer/centos-7.7.1908-kernel-5-x86_64-Minimal.box
+==> box: Successfully added box 'centos-7-5' (v0) for 'virtualbox'!
+root@ubuntu:~/manual_kernel_update/packer# vagrant box list
+centos-7-5 (virtualbox, 0)
+centos/7   (virtualbox, 2004.01)
+```
+Инициализирую образ в папке test
+```
+root@ubuntu:~/manual_kernel_update/test# vagrant init centos-7-5
+```
+Запускаю виртуальную машину с именем centos-7-5
+```
+root@ubuntu:~/manual_kernel_update/test# vagrant up
+Bringing machine 'kernel-update' up with 'virtualbox' provider...
+==> kernel-update: Importing base box 'centos-7-5'...
+==> kernel-update: Matching MAC address for NAT networking...
+==> kernel-update: Setting the name of the VM: test_kernel-update_1644063078235_53013
+==> kernel-update: Fixed port collision for 22 => 2222. Now on port 2200.
+==> kernel-update: Clearing any previously set network interfaces...
+==> kernel-update: Preparing network interfaces based on configuration...
+    kernel-update: Adapter 1: nat
+==> kernel-update: Forwarding ports...
+    kernel-update: 22 (guest) => 2200 (host) (adapter 1)
+==> kernel-update: Running 'pre-boot' VM customizations...
+==> kernel-update: Booting VM...
+==> kernel-update: Waiting for machine to boot. This may take a few minutes...
+    kernel-update: SSH address: 127.0.0.1:2200
+    kernel-update: SSH username: vagrant
+    kernel-update: SSH auth method: private key
+    kernel-update:
+    kernel-update: Vagrant insecure key detected. Vagrant will automatically replace
+    kernel-update: this with a newly generated keypair for better security.
+    kernel-update:
+    kernel-update: Inserting generated public key within guest...
+    kernel-update: Removing insecure key from the guest if it's present...
+    kernel-update: Key inserted! Disconnecting and reconnecting using new SSH key...
+==> kernel-update: Machine booted and ready!
+==> kernel-update: Checking for guest additions in VM...
+    kernel-update: No guest additions were detected on the base box for this VM! Guest
+    kernel-update: additions are required for forwarded ports, shared folders, host only
+    kernel-update: networking, and more. If SSH fails on this machine, please install
+    kernel-update: the guest additions and repackage the box to continue.
+    kernel-update:
+    kernel-update: This is not an error message; everything may continue to work properly,
+    kernel-update: in which case you may ignore this message.
+==> kernel-update: Setting hostname...
+```
+Подключаюсь к машине по ssh и проверяю версию ядра.
+```
+root@ubuntu:~/manual_kernel_update/test# vagrant ssh
+Last login: Sat Feb  5 12:05:06 2022 from 10.0.2.2
+[vagrant@kernel-update ~]$ uname -r
+5.16.5-1.el7.elrepo.x86_64
+```
