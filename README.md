@@ -1,10 +1,10 @@
-**<h1>Установка ПО</h1>**
+<h1>Установка ПО</h1>
 <ol>
 <h1><li>Установка git</li></h1>
 Установил git командой
-<p><code> apt install git<code><br>
+<p><code> apt install git</code><br>
 Склонировал репозиторий на локальную машину.
-<p><code> git clone https://github.com/dmitry-lyutenko/manual_kernel_update.git<code><br>
+<p><code> git clone https://github.com/dmitry-lyutenko/manual_kernel_update.git</code><br>
 <h1><li>Установка Virtualbox</li></h1>
 В качестве основной системы выбрана ubuntu (wsl v1.), поэтому устанавливаю virtualbox для ubuntu.
 <p><code>wget -q https://www.virtualbox.org/download/oracle_vbox_2016.asc -O- | sudo apt-key add -
