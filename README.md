@@ -1,6 +1,6 @@
 # **Установка ПО**
 
-## ** 1. Установка git**
+## **1. Установка git**
 
 Установил git командой:
 
@@ -11,7 +11,7 @@
 git clone https://github.com/nokio10/manual_kernel_update.git
 ```
 
-## ** 2. Установка Virtualbox**
+## **2. Установка Virtualbox**
 
 В качестве основной системы выбрана ubuntu, поэтому устанавливаю virtualbox для ubuntu.
 ```
