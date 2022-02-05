@@ -21,7 +21,7 @@ wget -q https://www.virtualbox.org/download/oracle_vbox.asc -O- | sudo apt-key a
 sudo sh -c 'echo "deb http://download.virtualbox.org/virtualbox/debian $(lsb_release -sc) contrib" >> /etc/apt/sources.list.d/virtualbox.list'
 sudo apt install virtualbox-6.1.26
 ```
-Проверяем версию ПО:
+Проверяю версию ПО:
 ```
 VBoxManage list extpacks
 Extension Packs: 1
@@ -35,7 +35,7 @@ Usable:       true
 Why unusable:
 ```
 ## **Установка Vagrant**
-Так как хостовая ОС выбрана Ubuntu, идем в соответствующий раздел на сайте https://www.vagrantup.com/downloads и выполняем действия описанные для данного дистрибутива:
+Так как хостовая ОС выбрана Ubuntu, иду в соответствующий раздел на сайте https://www.vagrantup.com/downloads и выполняю действия описанные для данного дистрибутива:
 
 ```
 curl -fsSL https://apt.releases.hashicorp.com/gpg | sudo apt-key add -
@@ -43,14 +43,14 @@ sudo apt-add-repository "deb [arch=amd64] https://apt.releases.hashicorp.com $(l
 sudo apt-get update && sudo apt-get install vagrant
 ```
 
-Проверяем версию ПО:
+Проверяю версию ПО:
 ```
 vagrant --version
 Vagrant 2.2.19
 ```
 
 # Kernel update
-Запускаем vagrant и проверяем подключение по ssh:
+Запускаю vagrant и проверяю подключение по ssh:
 ```
 root@ubuntu:~/manual_kernel_update#vagrant up
 Bringing machine 'kernel-update' up with 'virtualbox' provider...
@@ -100,7 +100,7 @@ root@ubuntu:~/manual_kernel_update# vagrant ssh
 [vagrant@kernel-update ~]$ uname -r
 3.10.0-1127.el7.x86_64
 ```
-Теперь обновляем ядро:
+Теперь обновляю ядро:
 ```
 [vagrant@kernel-update ~]$ sudo yum install -y http://www.elrepo.org/elrepo-release-7.0-3.el7.elrepo.noarch.rpm
 Failed to set locale, defaulting to C
@@ -200,7 +200,7 @@ Installed:
 
 Complete!
 ```
-Устанавливаем ядро по умолчанию:
+Устанавливаю ядро по умолчанию:
 ```
 [vagrant@kernel-update ~]$ sudo grub2-mkconfig -o /boot/grub2/grub.cfg
 Generating grub configuration file ...
@@ -217,3 +217,4 @@ done
 Загрузка прошла успешно, версия ядра изменилась. 
 
 # Packer
+
