@@ -292,8 +292,6 @@ drwxr-xr-x 6 root root      4096 фев  5 14:32 ../
 ```
 root@ubuntu:~/manual_kernel_update/packer# vagrant box list
 centos/7 (virtualbox, 2004.01)
-root@ubuntu:~/manual_kernel_update/packer# vagrant box add --name centos-7-5 centos
-centos-7.7.1908-kernel-5-x86_64-Minimal.box  centos.json
 root@ubuntu:~/manual_kernel_update/packer# vagrant box add --name centos-7-5 centos-7.7.1908-kernel-5-x86_64-Minimal.box
 ==> box: Box file was not detected as metadata. Adding it directly...
 ==> box: Adding box 'centos-7-5' (v0) for provider:
@@ -350,4 +348,31 @@ root@ubuntu:~/manual_kernel_update/test# vagrant ssh
 Last login: Sat Feb  5 12:05:06 2022 from 10.0.2.2
 [vagrant@kernel-update ~]$ uname -r
 5.16.5-1.el7.elrepo.x86_64
+```
+
+# Vagrant cloud
+
+Авторизуюсь в cloud командой 
+```
+vagrant cloud auth login --token <my token>
+```
+Публикую образ
+```
+root@ubuntu:~/manual_kernel_update/packer# vagrant cloud publish --release nokio10/centos-7-5 1.0 virtualbox ./centos-7.7.1908-kernel-5-x86_64-Minimal.box
+You are about to publish a box on Vagrant Cloud with the following options:
+nokio10/centos-7-5:   (v1.0) for provider 'virtualbox'
+Automatic Release:     true
+Do you wish to continue? [y/N]y
+Saving box information...
+Uploading provider with file /root/manual_kernel_update/packer/centos-7.7.1908-kernel-5-x86_64-Minimal.box
+Releasing box...
+Complete! Published nokio10/centos-7-5
+Box:              nokio10/centos-7-5
+Description:
+Private:          yes
+Created:          2022-02-05T12:27:21.023Z
+Updated:          2022-02-05T12:27:21.023Z
+Current Version:  N/A
+Versions:         1.0
+Downloads:        0
 ```
